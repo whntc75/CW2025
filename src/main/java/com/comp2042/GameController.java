@@ -35,7 +35,8 @@ public class GameController implements InputEventListener {
                 board.getScore().add(1);
             }
         }
-        return new DownData(clearRow, board.getViewData());
+        boolean landed = !canMove;
+        return new DownData(clearRow, board.getViewData(),landed);
     }
 
     @Override
