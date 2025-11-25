@@ -2,6 +2,7 @@ package com.comp2042;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.Animation;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -51,6 +52,8 @@ public class GuiController implements Initializable {
 
     private Timeline timeLine;
 
+    private Timeline hardDropTimeline;
+
     private final BooleanProperty isPause = new SimpleBooleanProperty();
 
     private final BooleanProperty isGameOver = new SimpleBooleanProperty();
@@ -86,6 +89,10 @@ public class GuiController implements Initializable {
                 }
                 if (keyEvent.getCode() == KeyCode.P) {
                     pauseGame(null);
+                    keyEvent.consume();
+                }
+                 if (keyEvent.getCode() == KeyCode.SPACE) {
+                    hardDrop();
                     keyEvent.consume();
                 }
             }
@@ -192,16 +199,41 @@ public class GuiController implements Initializable {
     }
 
     private void moveDown(MoveEvent event) {
-        if (isPause.getValue() == Boolean.FALSE) {
-            DownData downData = eventListener.onDownEvent(event);
-            if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
-                NotificationPanel notificationPanel = new NotificationPanel("+" + downData.getClearRow().getScoreBonus());
-                groupNotification.getChildren().add(notificationPanel);
-                notificationPanel.showScore(groupNotification.getChildren());
-            }
-            refreshBrick(downData.getViewData());
-        }
+         if (!isPause.get()){dropDown(event);}
         gamePanel.requestFocus();
+    }
+
+    private DownData dropDown(MoveEvent event) {
+        DownData downData = eventListener.onDownEvent(event);
+        if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
+            NotificationPanel notificationPanel = new NotificationPanel("+" + downData.getClearRow().getScoreBonus());
+            groupNotification.getChildren().add(notificationPanel);
+            notificationPanel.showScore(groupNotification.getChildren());
+        }
+        refreshBrick(downData.getViewData());
+        return downData;
+    }
+
+    private void hardDrop() {
+        if (isPause.get() || isGameOver.get()) { return; }
+        if (hardDropTimeline != null) { hardDropTimeline.stop(); }
+        if (timeLine != null) { timeLine.stop(); }
+
+        hardDropTimeline = new Timeline(
+                new KeyFrame(
+                        Duration.millis(30),
+                        event -> {
+                            DownData downData = dropDown(new MoveEvent(EventType.DOWN, EventSource.USER));
+                            if (downData.isBrickLanded() || isGameOver.get()) {
+                                hardDropTimeline.stop();
+                                if (!isPause.get() && !isGameOver.get() && timeLine != null) { timeLine.play(); }
+                                gamePanel.requestFocus();
+                            }
+                        }
+                )
+        );
+        hardDropTimeline.setCycleCount(Animation.INDEFINITE);
+        hardDropTimeline.play();
     }
 
     public void setEventListener(InputEventListener eventListener) {
