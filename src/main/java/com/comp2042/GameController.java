@@ -23,6 +23,7 @@ public class GameController implements InputEventListener {
             clearRow = board.clearRows();
             if (clearRow.getLinesRemoved() > 0) {
                 board.getScore().add(clearRow.getScoreBonus());
+                board.getScore().addLines(clearRow.getLinesRemoved());//Add the number of lines cleared in this round to the total lines cleared
             }
             if (board.createNewBrick()) {
                 viewGuiController.gameOver();
