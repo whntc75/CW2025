@@ -21,6 +21,12 @@
            text="Score: 0"
            textFill="RED"/>
 
+ <Label fx:id="linesLabel"
+           layoutX="220.0"
+           layoutY="45.0"
+           text="Lines: 0"
+           textFill="RED"/>
+
     <Group fx:id="groupNotification" layoutX="14" layoutY="203">
         <VBox alignment="CENTER">
             <GameOverPanel fx:id="gameOverPanel"/>
