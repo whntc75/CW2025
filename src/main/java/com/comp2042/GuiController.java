@@ -30,6 +30,9 @@ public class GuiController implements Initializable {
     private static final int BRICK_SIZE = 20;
 
     @FXML
+    private Label levelLabel;
+
+    @FXML
     private Label linesLabel;
 
     @FXML
@@ -250,6 +253,11 @@ public class GuiController implements Initializable {
     //Bind the Label for line count statistics
      public void bindLines(IntegerProperty integerProperty) {
         linesLabel.textProperty().bind(integerProperty.asString("Lines: %d"));
+    }
+
+    //Bind the Label for level count statistics
+    public void bindLevel(IntegerProperty integerProperty) {
+        levelLabel.textProperty().bind(integerProperty.asString("Level: %d"));
     }
 
     public void gameOver() {
