@@ -27,6 +27,12 @@
            text="Lines: 0"
            textFill="RED"/>
 
+ <Label fx:id="levelLabel"
+           layoutX="220.0"
+           layoutY="70.0"
+           text="Level: 1"
+           textFill="RED"/>
+
     <Group fx:id="groupNotification" layoutX="14" layoutY="203">
         <VBox alignment="CENTER">
             <GameOverPanel fx:id="gameOverPanel"/>
