@@ -26,6 +26,8 @@ public class GameController implements InputEventListener {
             if (clearRow.getLinesRemoved() > 0) {
                 board.getScore().add(clearRow.getScoreBonus());
                 board.getScore().addLines(clearRow.getLinesRemoved());//Add the number of lines cleared in this round to the total lines cleared
+                int currentLevel = board.getScore().getLevel();//Update the automatic falling speed based on the current level
+                viewGuiController.controlSpeed(currentLevel);
             }
             if (board.createNewBrick()) {
                 viewGuiController.gameOver();
