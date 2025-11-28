@@ -242,6 +242,16 @@ public class GuiController implements Initializable {
         hardDropTimeline.play();
     }
 
+    // Increase the block falling speed based on the current level
+    public void controlSpeed(int level) {
+        if (timeLine == null) {return;}
+
+        //The initial speed is 1.0, and an additional 0.1x speed is added each time the level increases
+        double newRate = 1.0 + (level - 1) * 0.1;
+
+        timeLine.setRate(newRate);
+    }
+
     public void setEventListener(InputEventListener eventListener) {
         this.eventListener = eventListener;
     }
