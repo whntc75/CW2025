@@ -9,6 +9,8 @@ public final class Score {
     private final IntegerProperty lines = new SimpleIntegerProperty(0);//record the total number of lines cleared
     private final IntegerProperty level = new SimpleIntegerProperty(1);//The level starts at 1
 
+    public int getLevel() {return level.get();}
+
     public IntegerProperty scoreProperty() {
         return score;
     }
