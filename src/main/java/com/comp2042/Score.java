@@ -29,6 +29,7 @@ public final class Score {
     lines.setValue(lines.getValue() + n);//Accumulate the number of lines cleared
     int totalLines = lines.get();      //The total number of lines cleared
     int newLevel = totalLines / 10 + 1; //Level up every time 10 lines are cleared
+    if (newLevel > 18) { newLevel = 18; } //Set the level cap to 18
     level.set(newLevel);}
 
 
