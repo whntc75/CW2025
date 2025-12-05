@@ -5,7 +5,7 @@ public final class DownData {
     private final ViewData viewData;
     private final boolean brickLanded;
 
-    public DownData(ClearRow clearRow, ViewData viewData) {
+    public DownData(ClearRow clearRow, ViewData viewData,boolean brickLanded) {
         this.clearRow = clearRow;
         this.viewData = viewData;
         this.brickLanded = brickLanded;
