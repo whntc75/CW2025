@@ -30,6 +30,9 @@ public class GuiController implements Initializable {
     private static final int BRICK_SIZE = 20;
 
     @FXML
+    private GridPane nextPanel;
+
+    @FXML
     private Label levelLabel;
 
     @FXML
@@ -51,6 +54,8 @@ public class GuiController implements Initializable {
     private GameOverPanel gameOverPanel;
 
     private Rectangle[][] displayMatrix;
+
+    private Rectangle[][] nextRectangles;
 
     private InputEventListener eventListener;
 
@@ -133,8 +138,9 @@ public class GuiController implements Initializable {
         }
         brickPanel.setLayoutX(gamePanel.getLayoutX() + brick.getxPosition() * brickPanel.getVgap() + brick.getxPosition() * BRICK_SIZE);
         brickPanel.setLayoutY(-42 + gamePanel.getLayoutY() + brick.getyPosition() * brickPanel.getHgap() + brick.getyPosition() * BRICK_SIZE);
+        
 
-
+        showNextBrick(brick);//Initialize the preview area on the right side.
         timeLine = new Timeline(new KeyFrame(
                 Duration.millis(400),
                 ae -> moveDown(new MoveEvent(EventType.DOWN, EventSource.THREAD))
@@ -217,6 +223,7 @@ public class GuiController implements Initializable {
             notificationPanel.showScore(groupNotification.getChildren());
         }
         refreshBrick(downData.getViewData());
+        showNextBrick(downData.getViewData());//Update the preview area.
         return downData;
     }
 
@@ -240,6 +247,34 @@ public class GuiController implements Initializable {
         );
         hardDropTimeline.setCycleCount(Animation.INDEFINITE);
         hardDropTimeline.play();
+    }
+
+     // Display the next brick in the preview area on the right side.
+    private void showNextBrick(ViewData data) {
+        int[][] next = data.getNextBrickData();
+        if (next == null) { return; }
+
+        int rows = next.length;
+        int cols = next[0].length;
+        
+        if (nextRectangles == null || nextRectangles.length != rows || nextRectangles[0].length != cols) {
+            nextPanel.getChildren().clear();
+            nextRectangles = new Rectangle[rows][cols];
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    Rectangle r = new Rectangle(BRICK_SIZE, BRICK_SIZE);
+                    r.setFill(getFillColor(next[i][j]));
+                    nextRectangles[i][j] = r;
+                    nextPanel.add(r, j, i);
+                }
+            }
+        } else {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    setRectangleData(next[i][j], nextRectangles[i][j]);
+                }
+            }
+        }
     }
 
     // Increase the block falling speed based on the current level
