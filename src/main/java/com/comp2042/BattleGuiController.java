@@ -136,8 +136,7 @@ public class BattleGuiController implements Initializable {
 
         int[][] boardMatrix = board.getBoardMatrix();
         Rectangle[][] displayMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
-
-        // 初始化游戏背景格子
+        
         for (int i = 2; i < boardMatrix.length; i++) {
             for (int j = 0; j < boardMatrix[i].length; j++) {
                 Rectangle rect = new Rectangle(BRICK_SIZE, BRICK_SIZE);
@@ -148,8 +147,7 @@ public class BattleGuiController implements Initializable {
                 gamePanel.add(rect, j, i - 2);
             }
         }
-
-        // 初始化当前方块面板
+        
         ViewData viewData = board.getViewData();
         int[][] brickData = viewData.getBrickData();
         Rectangle[][] brickRects = new Rectangle[brickData.length][brickData[0].length];
@@ -164,12 +162,10 @@ public class BattleGuiController implements Initializable {
                 brickPanel.add(rect, j, i);
             }
         }
-
-        // 设置方块面板位置
+        
         brickPanel.setLayoutX(gamePanel.getLayoutX() + viewData.getxPosition() * (BRICK_SIZE + 1));
         brickPanel.setLayoutY(-38 + gamePanel.getLayoutY() + viewData.getyPosition() * (BRICK_SIZE + 1));
-
-        // 保存引用
+        
         if (playerNum == 1) {
             displayMatrix1 = displayMatrix;
             brickRectangles1 = brickRects;
@@ -177,8 +173,7 @@ public class BattleGuiController implements Initializable {
             displayMatrix2 = displayMatrix;
             brickRectangles2 = brickRects;
         }
-
-        // 显示下一个方块
+        
         showNextBrick(playerNum);
     }
 
@@ -193,15 +188,14 @@ public class BattleGuiController implements Initializable {
     }
 
     private void startGameLoops() {
-        // 玩家1的游戏循环
+ 
         timeLine1 = new Timeline(new KeyFrame(
                 Duration.millis(500),
                 e -> moveDown(1)
         ));
         timeLine1.setCycleCount(Timeline.INDEFINITE);
         timeLine1.play();
-
-        // 玩家2/AI的游戏循环
+        
         timeLine2 = new Timeline(new KeyFrame(
                 Duration.millis(500),
                 e -> {
@@ -216,11 +210,9 @@ public class BattleGuiController implements Initializable {
     }
 
     private void performAIMove() {
-        // AI简单实现：根据难度随机决定是否做出最优移动
         if (Math.random() < aiDifficulty.getAccuracy()) {
-            // 尝试找一个好位置（简单策略：随机左右移动和旋转）
-            int moves = (int) (Math.random() * 5) - 2; // -2 到 2
-            int rotations = (int) (Math.random() * 4); // 0 到 3
+            int moves = (int) (Math.random() * 5) - 2;
+            int rotations = (int) (Math.random() * 4);
 
             for (int i = 0; i < rotations; i++) {
                 board2.rotateLeftBrick();
@@ -258,14 +250,11 @@ public class BattleGuiController implements Initializable {
                 board.getScore().add(clearRow.getScoreBonus());
                 board.getScore().addLines(clearRow.getLinesRemoved());
                 SoundManager.getInstance().playClearSound();
-
-                // 显示加分飘字
+                
                 Group notification = (playerNum == 1) ? notification1 : notification2;
                 NotificationPanel bonus = new NotificationPanel("+" + clearRow.getScoreBonus());
                 notification.getChildren().add(bonus);
                 bonus.showScore(notification.getChildren());
-
-                // 攻击机制：消4行让对手升级（加速）
                 if (clearRow.getLinesRemoved() >= 4) {
                     attackOpponent(playerNum);
                 }
@@ -279,7 +268,6 @@ public class BattleGuiController implements Initializable {
 
             refreshGameBackground(playerNum);
         } else {
-            // 用户按下键软降加1分
             if (isUserInput) {
                 board.getScore().add(1);
             }
@@ -293,12 +281,8 @@ public class BattleGuiController implements Initializable {
     private void attackOpponent(int attackerPlayer) {
         int targetPlayer = (attackerPlayer == 1) ? 2 : 1;
         Board targetBoard = (targetPlayer == 1) ? board1 : board2;
-
-        // 让对手强制升一级
         targetBoard.getScore().addLines(10);
         updateSpeed(targetPlayer);
-
-        // 显示攻击提示
         Platform.runLater(() -> {
             Group targetNotification = (targetPlayer == 1) ? notification1 : notification2;
             NotificationPanel attackNotice = new NotificationPanel("ATTACK!");
@@ -327,14 +311,10 @@ public class BattleGuiController implements Initializable {
             isGameOver2 = true;
             player2Label.getStyleClass().add("loser-text");
         }
-
-        // 停止两边游戏
+        
         timeLine1.stop();
         timeLine2.stop();
-
         SoundManager.getInstance().playGameOverSound();
-
-        // 显示胜者
         String winner;
         if (playerNum == 1) {
             winner = (gameMode == GameMode.VS_AI) ? "AI Wins!" : "Player 2 Wins!";
@@ -344,9 +324,8 @@ public class BattleGuiController implements Initializable {
             player1Label.getStyleClass().add("winner-text");
         }
         gameStatusLabel.setText(winner);
-        // 显示结束面板
         overlayTitle.setText(winner);
-        resumeBtn.setVisible(false);  // 游戏结束不能继续
+        resumeBtn.setVisible(false);
         overlayPane.setVisible(true);
 
     }
@@ -424,21 +403,18 @@ public class BattleGuiController implements Initializable {
     }
 
     private void handleKeyPress(KeyEvent event) {
-        // ESC 返回主菜单（任何时候都能用）
         if (event.getCode() == KeyCode.ESCAPE) {
             returnToMenu();
             event.consume();
             return;
         }
-
-        // N 重新开始（任何时候都能用）
+        
         if (event.getCode() == KeyCode.N) {
             restartGame();
             event.consume();
             return;
         }
-
-        // 暂停键（只在游戏进行中有效）
+        
         if (event.getCode() == KeyCode.P) {
             if (!gameEnded) {
                 togglePause();
@@ -490,7 +466,7 @@ public class BattleGuiController implements Initializable {
                     boolean currentGameOver = (playerNum == 1) ? isGameOver1 : isGameOver2;
 
                     if (board.moveBrickDown()) {
-                        board.getScore().add(1);  // 速降每格加2分
+                        board.getScore().add(1);
                         refreshBrick(playerNum);
                     } else {
                         // 落地了
@@ -542,31 +518,22 @@ public class BattleGuiController implements Initializable {
     }
 
     private void restartGame() {
-        // 停止所有时间线
         timeLine1.stop();
         timeLine2.stop();
         if (hardDropTimeline1 != null) hardDropTimeline1.stop();
         if (hardDropTimeline2 != null) hardDropTimeline2.stop();
-
-        // 重置状态
         isGameOver1 = false;
         isGameOver2 = false;
         isPaused = false;
         gameEnded = false;
-
-        // 清除面板
         gamePanel1.getChildren().clear();
         gamePanel2.getChildren().clear();
         brickPanel1.getChildren().clear();
         brickPanel2.getChildren().clear();
         overlayPane.setVisible(false);
         gameStatusLabel.setText("");
-
-        // 移除胜负样式
         player1Label.getStyleClass().removeAll("winner-text", "loser-text");
         player2Label.getStyleClass().removeAll("winner-text", "loser-text");
-
-        // 重新初始化
         board1 = new SimpleBoard(25, 10);
         board2 = new SimpleBoard(25, 10);
         board1.createNewBrick();
@@ -582,7 +549,6 @@ public class BattleGuiController implements Initializable {
     }
 
     private void returnToMenu() {
-        // 停止所有时间线
         timeLine1.stop();
         timeLine2.stop();
         if (hardDropTimeline1 != null) hardDropTimeline1.stop();
@@ -615,3 +581,4 @@ public class BattleGuiController implements Initializable {
         };
     }
 }
+
