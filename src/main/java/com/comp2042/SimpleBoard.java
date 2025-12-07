@@ -7,7 +7,9 @@ import com.comp2042.logic.bricks.BagBrickGenerator;
 import java.awt.*;
 
 public class SimpleBoard implements Board {
-
+    private Brick currentBrick;
+    private Brick holdBrick;
+    private boolean holdUsedThisTurn;
     private final int width;
     private final int height;
     private final BrickGenerator brickGenerator;
@@ -86,6 +88,7 @@ public class SimpleBoard implements Board {
         Brick currentBrick = brickGenerator.getBrick();
         brickRotator.setBrick(currentBrick);
         currentOffset = new Point(4, 0);
+        holdUsedThisTurn = false;
         return MatrixOperations.intersect(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
     }
 
@@ -96,7 +99,8 @@ public class SimpleBoard implements Board {
 
     @Override
     public ViewData getViewData() {
-        return new ViewData(brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY(), brickGenerator.getNextBrick().getShapeMatrix().get(0));
+         int[][] holdShape = getHoldBrickShape();
+        return new ViewData(brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY(), brickGenerator.getNextBrick().getShapeMatrix().get(0),holdShape);
     }
 
     @Override
@@ -117,11 +121,46 @@ public class SimpleBoard implements Board {
         return score;
     }
 
+    @Override
+    public boolean holdCurrentBrick() {
+        if (holdUsedThisTurn) {
+            return false;
+        }
+
+        if (holdBrick == null) {
+            holdBrick = currentBrick;
+            currentBrick = brickGenerator.getBrick();
+        } else {
+        
+            Brick tmp = currentBrick;
+            currentBrick = holdBrick;
+            holdBrick = tmp;
+        }
+
+        brickRotator.setBrick(currentBrick);
+        currentOffset = new Point(4, 0);
+        holdUsedThisTurn = true;
+
+        return true;
+    }
+
+      @Override
+    public int[][] getHoldBrickShape() {
+        if (holdBrick == null) {
+            return null;
+        }
+        return holdBrick.getShapeMatrix().get(0);
+    }
+
+
 
     @Override
     public void newGame() {
         currentGameMatrix = new int[width][height];
         score.reset();
+        holdBrick = null;  
+        holdUsedThisTurn = false;
+
         createNewBrick();
     }
 }
