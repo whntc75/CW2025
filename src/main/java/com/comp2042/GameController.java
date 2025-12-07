@@ -68,4 +68,10 @@ public class GameController implements InputEventListener {
         board.newGame();
         viewGuiController.refreshGameBackground(board.getBoardMatrix());
     }
+
+    @Override
+    public ViewData onHoldEvent(MoveEvent event) {
+        board.holdCurrentBrick();      
+        return board.getViewData();
+    }
 }
