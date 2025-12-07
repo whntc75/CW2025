@@ -1,6 +1,8 @@
 package com.comp2042;
 
 public interface InputEventListener {
+    
+    ViewData onHoldEvent(MoveEvent event);
 
     DownData onDownEvent(MoveEvent event);
 
