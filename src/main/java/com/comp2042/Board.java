@@ -2,6 +2,10 @@ package com.comp2042;
 
 public interface Board {
 
+    boolean holdCurrentBrick();
+
+    int[][] getHoldBrickShape();
+
     boolean moveBrickDown();
 
     boolean moveBrickLeft();
