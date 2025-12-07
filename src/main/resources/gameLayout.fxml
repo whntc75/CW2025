@@ -1,43 +1,112 @@
 <?import com.comp2042.GameOverPanel?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
 <?import java.net.URL?>
+<?import com.comp2042.PausePanel?>
+
+
 <Pane fx:controller="com.comp2042.GuiController"
-      xmlns:fx="http://javafx.com/fxml">
-    <GridPane fx:id="brickPanel" vgap="1" hgap="1"/>
+      xmlns:fx="http://javafx.com/fxml"
+      prefWidth="460" prefHeight="600">
+
     <BorderPane styleClass="gameBoard" fx:id="gameBoard">
         <center>
-            <GridPane fx:id="gamePanel" hgap="1" vgap="1" layoutY="30" layoutX="40"/>
+            <GridPane fx:id="gamePanel"
+                      hgap="1"
+                      vgap="1"
+                      layoutY="30"
+                      layoutX="40"/>
         </center>
     </BorderPane>
 
-<Label fx:id="scoreLabel"
-           layoutX="220.0"
-           layoutY="20.0"
-           text="Score: 0"
-           textFill="RED"/>
+    <GridPane fx:id="brickPanel"
+              vgap="1"
+              hgap="1"/>
 
- <Label fx:id="linesLabel"
-           layoutX="220.0"
-           layoutY="45.0"
-           text="Lines: 0"
-           textFill="RED"/>
+    <BorderPane layoutX="216" layoutY="0"
+                prefWidth="190" prefHeight="130"
+                styleClass="info-panel">
+        <center>
+            <VBox spacing="8" alignment="CENTER">
+                <Label fx:id="scoreLabel"
+                       text="Score: 0"
+                       styleClass="info-value"/>
 
- <Label fx:id="levelLabel"
-           layoutX="220.0"
-           layoutY="70.0"
-           text="Level: 1"
-           textFill="RED"/>
+                <Label fx:id="linesLabel"
+                       text="Lines: 0"
+                       styleClass="info-value"/>
 
-    <Group fx:id="groupNotification" layoutX="14" layoutY="203">
+                <Label fx:id="levelLabel"
+                       text="Level: 1"
+                       styleClass="info-value"/>
+            </VBox>
+        </center>
+    </BorderPane>
+
+    <BorderPane layoutX="216" layoutY="130"
+                prefWidth="190" prefHeight="100"
+                styleClass="info-panel">
+        <top>
+            <Label text="NEXT" styleClass="panel-title"/>
+        </top>
+        <center>
+            <GridPane fx:id="nextPanel"
+                      hgap="2" vgap="2"
+                      alignment="CENTER"
+                      minHeight="10"
+                      prefHeight="200"/>
+        </center>
+    </BorderPane>
+
+    <BorderPane layoutX="216" layoutY="230"
+                prefWidth="190" prefHeight="100"
+                styleClass="info-panel">
+        <top>
+            <Label text="HOLD" styleClass="panel-title"/>
+        </top>
+        <center>
+            <GridPane fx:id="holdPanel"
+                      hgap="2" vgap="2"
+                      alignment="CENTER"/>
+        </center>
+    </BorderPane>
+
+    <BorderPane layoutX="216" layoutY="330"
+                prefWidth="190" prefHeight="100"
+                styleClass="info-panel">
+        <top>
+            <Label text="CONTROLS" styleClass="panel-title"/>
+        </top>
+        <center>
+            <VBox spacing="4" alignment="CENTER_LEFT"
+                  style="-fx-padding:0 10 10 10;">
+                <Label text="← → : Move"        styleClass="control-text"/>
+                <Label text="↓ : Soft Drop"     styleClass="control-text"/>
+                <Label text="↑ : Rotate"        styleClass="control-text"/>
+                <Label text="SPACE : Hard Drop" styleClass="control-text"/>
+                <Label text="C : Hold"          styleClass="control-text"/>
+                <Label text="P : Pause"         styleClass="control-text"/>
+            </VBox>
+        </center>
+    </BorderPane>
+
+    <Group fx:id="groupNotification" layoutX="40" layoutY="200">
         <VBox alignment="CENTER">
-            <GameOverPanel fx:id="gameOverPanel"/>
+            <GameOverPanel fx:id="gameOverPanel"
+                           styleClass="game-over-panel"/>
         </VBox>
     </Group>
+    <!-- Pause Panel - shown when game is paused -->
+    <StackPane fx:id="pauseOverlay" layoutX="0" layoutY="0"
+               prefWidth="410" prefHeight="490" visible="false"
+               style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+        <PausePanel fx:id="pausePanel"/>
+    </StackPane>
+
+
+
+
     <stylesheets>
         <URL value="@window_style.css"/>
     </stylesheets>

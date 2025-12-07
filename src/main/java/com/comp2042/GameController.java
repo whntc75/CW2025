@@ -30,7 +30,7 @@ public class GameController implements InputEventListener {
                 viewGuiController.controlSpeed(currentLevel);
             }
             if (board.createNewBrick()) {
-                viewGuiController.gameOver();
+                viewGuiController.gameOver(board.getScore().scoreProperty().get());
             }
 
             viewGuiController.refreshGameBackground(board.getBoardMatrix());
@@ -68,4 +68,12 @@ public class GameController implements InputEventListener {
         board.newGame();
         viewGuiController.refreshGameBackground(board.getBoardMatrix());
     }
+
+    //hold
+    @Override
+    public ViewData onHoldEvent(MoveEvent event) {
+        board.holdCurrentBrick();       //Check if hold has been used
+        return board.getViewData();
+    }
+
 }
