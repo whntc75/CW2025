@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.Group?>
+<?import java.net.URL?>
+
+<Pane fx:id="rootPane"
+      fx:controller="com.comp2042.BattleGuiController"
+      xmlns:fx="http://javafx.com/fxml"
+      prefWidth="750" prefHeight="550"
+      style="-fx-background-color: #1A1A1A;">
+
+    <HBox alignment="CENTER" spacing="20" layoutX="10" layoutY="10">
+        <!-- player1 -->
+        <HBox spacing="5">
+            <Pane fx:id="gamePane1" styleClass="gameBoard" prefWidth="195" prefHeight="443" minHeight="443" maxHeight="443">
+                <GridPane fx:id="gamePanel1" hgap="1" vgap="1" layoutX="3" layoutY="3"/>
+                <GridPane fx:id="brickPanel1" hgap="1" vgap="1"/>
+                <Group fx:id="notification1" layoutX="30" layoutY="180"/>
+            </Pane>
+            <VBox spacing="5" alignment="TOP_CENTER">
+                <Label fx:id="player1Label" text="PLAYER 1" styleClass="player-label-small"/>
+                <VBox styleClass="info-panel-small" alignment="CENTER" style="-fx-padding: 5;">
+                    <Label text="NEXT" styleClass="panel-title-small"/>
+                    <GridPane fx:id="nextPanel1" hgap="1" vgap="1" alignment="CENTER"/>
+                </VBox>
+                <VBox styleClass="info-panel-small" alignment="CENTER" style="-fx-padding: 5;">
+                    <Label text="HOLD" styleClass="panel-title-small"/>
+                    <GridPane fx:id="holdPanel1" hgap="1" vgap="1" alignment="CENTER"/>
+                </VBox>
+                <VBox styleClass="info-panel-small" spacing="2" alignment="CENTER" style="-fx-padding: 5;">
+                    <Label text="SCORE" styleClass="panel-title-small"/>
+                    <Label fx:id="scoreLabel1" text="0" styleClass="info-value-small"/>
+                </VBox>
+                <VBox styleClass="info-panel-small" spacing="2" alignment="CENTER" style="-fx-padding: 5;">
+                    <Label fx:id="linesLabel1" text="Lines: 0" styleClass="info-text-small"/>
+                    <Label fx:id="levelLabel1" text="Lv: 1" styleClass="info-text-small"/>
+                </VBox>
+                <VBox styleClass="info-panel-small" spacing="1" alignment="CENTER" style="-fx-padding: 3;">
+                    <Label text="Controls" styleClass="panel-title-small"/>
+                    <Label text="← → Move" styleClass="control-hint"/>
+                    <Label text="↑ Rotate" styleClass="control-hint"/>
+                    <Label text="↓ Down" styleClass="control-hint"/>
+                    <Label text="Space Drop" styleClass="control-hint"/>
+                    <Label text="C Hold" styleClass="control-hint"/>
+                </VBox>
+            </VBox>
+        </HBox>
+
+        <!-- VS -->
+        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 0 10;">
+            <Label text="VS" styleClass="vs-label"/>
+            <Label fx:id="gameStatusLabel" text="" styleClass="status-label"/>
+        </VBox>
+
+        <!-- Player2/AI -->
+        <HBox spacing="5">
+            <VBox spacing="5" alignment="TOP_CENTER">
+                <Label fx:id="player2Label" text="PLAYER 2" styleClass="player-label-small"/>
+                <VBox styleClass="info-panel-small" alignment="CENTER" style="-fx-padding: 5;">
+                    <Label text="NEXT" styleClass="panel-title-small"/>
+                    <GridPane fx:id="nextPanel2" hgap="1" vgap="1" alignment="CENTER"/>
+                </VBox>
+                <VBox styleClass="info-panel-small" alignment="CENTER" style="-fx-padding: 5;">
+                    <Label text="HOLD" styleClass="panel-title-small"/>
+                    <GridPane fx:id="holdPanel2" hgap="1" vgap="1" alignment="CENTER"/>
+                </VBox>
+                <VBox styleClass="info-panel-small" spacing="2" alignment="CENTER" style="-fx-padding: 5;">
+                    <Label text="SCORE" styleClass="panel-title-small"/>
+                    <Label fx:id="scoreLabel2" text="0" styleClass="info-value-small"/>
+                </VBox>
+                <VBox styleClass="info-panel-small" spacing="2" alignment="CENTER" style="-fx-padding: 5;">
+                    <Label fx:id="linesLabel2" text="Lines: 0" styleClass="info-text-small"/>
+                    <Label fx:id="levelLabel2" text="Lv: 1" styleClass="info-text-small"/>
+                </VBox>
+                <VBox fx:id="player2ControlsBox" styleClass="info-panel-small" spacing="1" alignment="CENTER" style="-fx-padding: 3;">
+                    <Label text="Controls" styleClass="panel-title-small"/>
+                    <Label text="A D Move" styleClass="control-hint"/>
+                    <Label text="W Rotate" styleClass="control-hint"/>
+                    <Label text="S Down" styleClass="control-hint"/>
+                    <Label text="E Drop" styleClass="control-hint"/>
+                    <Label text="Q Hold" styleClass="control-hint"/>
+                </VBox>
+            </VBox>
+            <Pane fx:id="gamePane2" styleClass="gameBoard" prefWidth="195" prefHeight="443" minHeight="443" maxHeight="443">
+                <GridPane fx:id="gamePanel2" hgap="1" vgap="1" layoutX="3" layoutY="3"/>
+                <GridPane fx:id="brickPanel2" hgap="1" vgap="1"/>
+                <Group fx:id="notification2" layoutX="30" layoutY="180"/>
+            </Pane>
+        </HBox>
+    </HBox>
+
+    <!-- pause/gameover panel -->
+    <StackPane fx:id="overlayPane" layoutX="0" layoutY="0"
+               prefWidth="750" prefHeight="550" visible="false"
+               style="-fx-background-color: rgba(0,0,0,0.7);">
+        <VBox alignment="CENTER" spacing="20">
+            <Label fx:id="overlayTitle" text="PAUSED" styleClass="pauseStyle"/>
+            <Button fx:id="resumeBtn" text="Resume" styleClass="pause-button"/>
+            <Button fx:id="restartBtn" text="Restart" styleClass="pause-button"/>
+            <Button fx:id="menuBtn" text="Main Menu" styleClass="pause-button"/>
+        </VBox>
+    </StackPane>
+
+    <stylesheets>
+        <URL value="@window_style.css"/>
+    </stylesheets>
+</Pane>

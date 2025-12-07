@@ -18,6 +18,10 @@ public interface Board {
 
     int[][] getBoardMatrix();
 
+    boolean holdCurrentBrick();//hold
+
+    int[][] getHoldBrickShape();//hold
+
     ViewData getViewData();
 
     void mergeBrickToBackground();

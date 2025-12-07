@@ -7,6 +7,10 @@ import com.comp2042.logic.bricks.BagBrickGenerator;
 import java.awt.*;
 
 public class SimpleBoard implements Board {
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     private Brick currentBrick;
     private Brick holdBrick;
     private boolean holdUsedThisTurn;
@@ -88,7 +92,13 @@ public class SimpleBoard implements Board {
         currentBrick = brickGenerator.getBrick();
         brickRotator.setBrick(currentBrick);
         currentOffset = new Point(4, 0);
+<<<<<<< Updated upstream
         holdUsedThisTurn = false;
+=======
+
+        holdUsedThisTurn = false;
+
+>>>>>>> Stashed changes
         return MatrixOperations.intersect(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
     }
 
@@ -99,7 +109,11 @@ public class SimpleBoard implements Board {
 
     @Override
     public ViewData getViewData() {
+<<<<<<< Updated upstream
          int[][] holdShape = getHoldBrickShape();
+=======
+        int[][] holdShape = getHoldBrickShape();
+>>>>>>> Stashed changes
         return new ViewData(brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY(), brickGenerator.getNextBrick().getShapeMatrix().get(0),holdShape);
     }
 
@@ -155,12 +169,51 @@ public class SimpleBoard implements Board {
 
 
     @Override
+    public boolean holdCurrentBrick() {
+        //not allow hold again
+        if (holdUsedThisTurn) {
+            return false;
+        }
+
+        if (holdBrick == null) {
+            holdBrick = currentBrick;
+            currentBrick = brickGenerator.getBrick();
+        } else {
+            Brick tmp = currentBrick;
+            currentBrick = holdBrick;
+            holdBrick = tmp;
+        }
+
+        brickRotator.setBrick(currentBrick);
+        currentOffset = new Point(4, 0);
+        holdUsedThisTurn = true;
+
+        return true;
+    }
+
+    @Override
+    public int[][] getHoldBrickShape() {
+        if (holdBrick == null) {
+            return null;
+        }
+        return holdBrick.getShapeMatrix().get(0);
+    }
+
+
+
+
+    @Override
     public void newGame() {
         currentGameMatrix = new int[width][height];
         score.reset();
+<<<<<<< Updated upstream
         holdBrick = null;  
         holdUsedThisTurn = false;
 
+=======
+        holdBrick = null;
+        holdUsedThisTurn = false;
+>>>>>>> Stashed changes
         createNewBrick();
     }
 }

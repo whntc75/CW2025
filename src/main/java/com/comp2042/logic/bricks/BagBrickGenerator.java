@@ -1,10 +1,18 @@
 package com.comp2042.logic.bricks;
+<<<<<<< Updated upstream
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Collections;
+=======
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
+>>>>>>> Stashed changes
 
 /**
  * 7-bag Tetromino Generator:
