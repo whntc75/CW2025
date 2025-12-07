@@ -28,7 +28,9 @@ import java.util.ResourceBundle;
 public class GuiController implements Initializable {
 
     private static final int BRICK_SIZE = 20;
-
+    @FXML
+    private GridPane holdPanel;
+    
     @FXML
     private GridPane nextPanel;
 
@@ -104,6 +106,18 @@ public class GuiController implements Initializable {
                 }
                  if (keyEvent.getCode() == KeyCode.SPACE) {
                     hardDrop();
+                    keyEvent.consume();
+                }
+
+                 if (keyEvent.getCode() == KeyCode.C) {
+                    ViewData viewData = eventListener.onHoldEvent(
+                            new MoveEvent(EventType.HOLD, EventSource.USER)
+                    );
+                   
+                    refreshBrick(viewData)
+                    showHoldBrick(viewData);
+                    showNextBrick(viewData);
+
                     keyEvent.consume();
                 }
             }
@@ -276,6 +290,39 @@ public class GuiController implements Initializable {
             }
         }
     }
+
+     private void renderMiniBrick(GridPane panel, int[][] shape) {
+        panel.getChildren().clear();
+        if (shape == null) {return;}
+
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[i].length; j++) {
+                if (shape[i][j] != 0) {
+                    Rectangle rect = new Rectangle(BRICK_SIZE, BRICK_SIZE);
+                    rect.setFill(getFillColor(shape[i][j]));
+                    rect.setArcHeight(9); 
+                    rect.setArcWidth(9);   
+                    panel.add(rect, j, i);
+                }
+            }
+        }
+    }
+
+     public void showHoldBrick(ViewData viewData) {
+        if (viewData == null) {
+            holdPanel.getChildren().clear();
+            return;
+        }
+        
+        int[][] holdData = viewData.getHoldBrickData();
+        if (holdData == null) {
+            holdPanel.getChildren().clear();
+            return;
+        }
+
+        renderMiniBrick(holdPanel, holdData);
+    }
+
 
     // Increase the block falling speed based on the current level
     public void controlSpeed(int level) {
